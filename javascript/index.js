@@ -14,18 +14,20 @@ const milUniElement = document.getElementById('milUni');
 const splitsElement = document.getElementById('splits');
 
 function printTime() {
-/*  ACHO QUE O PROBLEMA ESTA AQUI EM DIANTE.
-  console.log(chronometer.currentTime);
-  secUniElement.innerHTML = `this.currentTime`;
-  secDecElement.innerHTML = chronometer.getAttribute('currentTime'); */
+  printSeconds();
+  printMinutes();  
 }
 
 function printMinutes() {
-  //chronometer.getMinutes()
+  let minutes = chronometer.computeTwoDigitNumber(chronometer.getMinutes());
+  minDecElement.innerHTML = minutes[0];
+  minUniElement.innerHTML = minutes[1];
 }
 
 function printSeconds() {
-  //chronometer.getSeconds();
+  let seconds = chronometer.computeTwoDigitNumber(chronometer.getSeconds());
+  secDecElement.innerHTML = seconds[0];
+  secUniElement.innerHTML = seconds[1];
 }
 
 // ==> BONUS
@@ -33,8 +35,10 @@ function printMilliseconds() {
   // ... your code goes here
 }
 
-function printSplit() {
-  // ... your code goes here
+function printSplit(time) {
+  let oneSplit = document.createElement('li');
+  oneSplit.innerHTML = time;
+  splitsElement.appendChild(oneSplit)
 }
 
 function clearSplits() {
@@ -51,7 +55,8 @@ function setStopBtn() {
 }
 
 function setSplitBtn() {
-  chronometer.split();
+  let time = `${chronometer.computeTwoDigitNumber(chronometer.getMinutes())}:${chronometer.computeTwoDigitNumber(chronometer.getSeconds())}`;
+  printSplit(time);
 }
 
 function setStartBtn() {
@@ -64,14 +69,15 @@ function setStartBtn() {
 }
 
 function setResetBtn() {
-  chronometer.reset()
+  chronometer.reset();
+  printTime();
 }
 
 // Start/Stop Button
 btnLeftElement.addEventListener('click', () => {
   if (btnLeftElement.className === 'btn start' ) {
     setStartBtn();
-    chronometer.start(printTime);
+    chronometer.start(this.printTime);
   } else if (btnLeftElement.className === 'btn stop' ) {
     setStopBtn();
     chronometer.stop()}
@@ -84,5 +90,6 @@ btnRightElement.addEventListener('click', () => {
   if (btnLeftElement.className === 'btn start' ) {
     setResetBtn();
   } else if (btnLeftElement.className === 'btn stop' ) {
+    // setSplitBtn() - WHY THIS FUNCTION EXISTS?
     setSplitBtn()}
 });
